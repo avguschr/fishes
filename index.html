@@ -7,11 +7,14 @@
     <script defer src="main.js"></script>
     <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>
+
     <title>Fishes</title>
 </head>
 <body>
     <div id="app" v-cloak>
         <div class="main">
+            <transition name="fade">
             <div v-if="modal" class="row d-flex justify-content-center">
                 <div class="mymodal">
                     <div class="col-4 card shadow-lg p-3 mb-5 bg-body rounded">
@@ -23,21 +26,46 @@
                     </div>
                 </div>
             </div>
+        </transition>
             <div class="row d-flex justify-content-between">
                 <div  ref="field" class="field card col-9">
-                    <div class="fish" v-for="(fish, index) in fishes" :key="index" :style="{'left':fish.coords.left, 'top':fish.coords.top}" :ref="'fish' + (index + 1)" v-cloak>
+                    <div class="fish" 
+                    @click="fishClick(index)"
+                    v-for="(fish, index) in fishes" :key="index" 
+                    :style="{'left':fish.coords.left, 'top':fish.coords.top}" 
+                    :class="{'direction': fish.direction}">
                         <img :src="fish.name" alt="">
                     </div>
                 </div>
                 <div class="col-3 card pt-3">
                     <h3>Рекорды</h3>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">An item</li>
-                        <li class="list-group-item">A second item</li>
-                        <li class="list-group-item">A third item</li>
+                    <transition-group class="list-group list-group-flush mb-3" name="flip-list" tag="ul">
+                        <li class="list-group-item" v-for="item in local" :key="item">
+                            {{ item }}
+                          </li>                        </transition-group>
+                        <ul class="list-group list-group-flush mb-3">    
+                        <li class="list-group-item">Баллов набрали
+                            <span class="badge bg-primary rounded-pill">{{scores}}</span>
+                        </li>
+                        <li v-if="timer.minText" class="list-group-item">Таймер:
+                            <span>{{timer.minText}}</span>:<span>{{timer.secText}}</span>
+                        </li>
                     </ul>
                 </div>
             </div>
+            <transition name="fade">
+                <div v-if="end" class="row d-flex justify-content-center">
+                    <div class="mymodal">
+                        <div class="col-4 card shadow-lg p-3 mb-5 bg-body rounded">
+                            <div class="card-body">
+                                <h5 class="mb-3">Игра окончена</h5>
+                                <p>Счет: {{scores}}</p>
+                                <button @click="start" class="btn btn-success">Начать заново</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </transition>
         </div>
     </div>
 </body>
