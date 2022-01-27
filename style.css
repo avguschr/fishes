@@ -1,0 +1,44 @@
+
+[v-cloak] {
+    display: none;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+.field {
+    height: 100vh;
+    background-image: url("img/background.jpg") !important;
+    position: sticky;
+}
+
+.mymodal {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99;
+
+}
+
+.window {
+    background: #fff;
+    max-width: 100%;
+
+}
+
+img {
+    width: 150px;
+}
+
+.fish {
+    position: absolute;
+}
